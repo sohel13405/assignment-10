@@ -8,6 +8,10 @@ import About from "../pages/about/About";
 import GroupDetails from "../pages/groupDetails/GroupDetails";
 import Loading from "../pages/loading/Loading";
 import UpdateGroup from "../pages/updateGroup/UpdateGroup";
+import AuthLayout from "../components/auth/AuthLayout";
+import Login from "../components/login/Login";
+import Register from "../components/register/Register";
+import PrivateRoute from "../components/privateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -21,16 +25,25 @@ const router = createBrowserRouter([
         },
         {
             path: '/allGroups',
-            element: <AllGroups></AllGroups>
+            loader: ()=> fetch('http://localhost:3000/groups'),
+            element: <PrivateRoute>
+                <AllGroups></AllGroups>
+            </PrivateRoute>
         },
         {
             path: '/createGroup',
-            element: <CreateGroup></CreateGroup>
+            element: <PrivateRoute>
+                <CreateGroup></CreateGroup>
+            </PrivateRoute>
         },
         {
             path: '/myGroup',
-            loader: ()=> fetch('http://localhost:3000/groups'),
-            element: <MyGroup></MyGroup>
+            element:
+                <PrivateRoute>
+                    <MyGroup></MyGroup>
+                </PrivateRoute>,
+            
+            loader: ()=> fetch('http://localhost:3000/groups')
         },
         {
             path: 'about',
@@ -38,7 +51,9 @@ const router = createBrowserRouter([
         },
         {
             path:'/groupDetails/:id',
-            element: <GroupDetails></GroupDetails>,
+            element: <PrivateRoute>
+                <GroupDetails></GroupDetails>
+            </PrivateRoute>,
             loader: ()=> fetch('http://localhost:3000/groups'),
             hydrateFallbackElement:<Loading></Loading>
         },
@@ -46,9 +61,30 @@ const router = createBrowserRouter([
             path: '/updateGroup/:id',
             loader: ({params}) => fetch(`http://localhost:3000/groups/${params.id}`),
             element:<UpdateGroup></UpdateGroup>
-        }
+        },
+        
+       
       ]
     },
+
+    {
+        path:'/auth',
+        element: <AuthLayout></AuthLayout>,
+        children: [
+         {
+            path: '/auth/login',
+            element: <Login></Login>
+         },
+         {
+            path: '/auth/register',
+            element: <Register></Register>
+         }
+
+        ]
+    },
+
+
+
   ]);
 
   export default router;

@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { use } from 'react';
 import { MdOutlineDoubleArrow } from 'react-icons/md';
-import { NavLink } from 'react-router';
+import {   NavLink } from 'react-router';
+import { AuthContext } from '../../context/AuthContext';
 
 
 const Groups = ({group}) => {
     const {photo,name,category,description,_id} = group;
+
+    
+
+    const {user} = use(AuthContext)
+
+    const handleClick = () =>{
+
+        if(user && user?.email){
+            return;
+        }
+        
+
+    }
+
 
     return (
         <div className='border border-[#e5e1e1] rounded-2xl p-3 '>
@@ -27,7 +42,7 @@ const Groups = ({group}) => {
 
            <div className='flex  justify-center-safe'>
            <NavLink to={`/groupDetails/${_id}`}>
-           <button className='btn btn-ghost text-[#da7203]' >See more<MdOutlineDoubleArrow /></button>
+           <button onClick={handleClick} className='btn btn-ghost text-[#da7203]' >See more<MdOutlineDoubleArrow /></button>
            </NavLink>
            </div>
             

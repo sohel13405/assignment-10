@@ -1,21 +1,16 @@
 import React from 'react';
 import Navbar from '../navbar/Navbar';
-import Footer from '../footer/Footer';
 import { Outlet } from 'react-router';
+import Footer from '../footer/Footer';
 
-
-
-const Root = () => {
+const AuthLayout = () => {
     return (
         <div>
             <Navbar></Navbar>
-            
-            <Outlet>
-                
-            </Outlet>
+            <Outlet></Outlet>
             <Footer></Footer>
         </div>
     );
 };
 
-export default Root;
+export default AuthLayout;
